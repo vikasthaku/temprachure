@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Stopwatch</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.stopwatch {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.time {
+    font-size: 3em;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    margin: 0 10px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="stopwatch">
+        <div class="time">00:00:00</div>
+        <div class="controls">
+            <button id="startButton">Start</button>
+            <button id="stopButton">Stop</button>
+            <button id="resetButton">Reset</button>
+        </div>
+    </div>
+   <script>
+let timer;
+let isRunning = false;
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+
+const timeDisplay = document.querySelector('.time');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+const resetButton = document.getElementById('resetButton');
+
+function startTimer() {
+    if (!isRunning) {
+        isRunning = true;
+        timer = setInterval(updateTime, 1000);
+        startButton.disabled = true;
+    }
+}
+
+function stopTimer() {
+    if (isRunning) {
+        isRunning = false;
+        clearInterval(timer);
+        startButton.disabled = false;
+    }
+}
+
+function resetTimer() {
+    isRunning = false;
+    clearInterval(timer);
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    updateTime();
+    startButton.disabled = false;
+}
+
+function updateTime() {
+    seconds++;
+    if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes === 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+    const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    timeDisplay.textContent = timeString;
+}
+
+startButton.addEventListener('click', startTimer);
+stopButton.addEventListener('click', stopTimer);
+resetButton.addEventListener('click', resetTimer);
+
+   </script>
+</body>
+</html>
